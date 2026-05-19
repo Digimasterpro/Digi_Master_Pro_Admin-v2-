@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digimaster Pro - Panel de Administración</title>
+    <!-- Tailwind CSS para diseño moderno -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons para iconos limpios -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js para gráficos interactivos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen flex flex-col md:flex-row">
+
+    <!-- BARRA LATERAL (SIDEBAR) -->
+    <aside class="w-full md:w-64 bg-gray-800 border-r border-gray-700 flex flex-col justify-between p-4 shrink-0">
+        <div>
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 px-2 py-3 border-b border-gray-700 mb-6">
+                <div class="bg-blue-600 p-2 rounded-lg text-white">
+                    <i data-lucide="layers" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-white leading-tight">Digimaster Pro</h1>
+                    <span class="text-xs text-blue-400 font-semibold">Panel de Control</span>
+                </div>
+            </div>
+
+            <!-- Navegación -->
+            <nav class="space-y-1">
+                <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-gray-700 hover:text-white transition" onclick="alert('Funcionalidad de Usuarios (Simulación Base44)')">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>Usuarios / Clientes</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-gray-700 hover:text-white transition" onclick="alert('Funcionalidad de Ventas y Proyectos')">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span>Ventas y Licencias</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-gray-700 hover:text-white transition" onclick="alert('Configuración del Sistema')">
+                    <i data-lucide="sliders" class="w-5 h-5"></i>
+                    <span>Configuración</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-gray-700 hover:text-white transition" onclick="alert('Logs e Integraciones con IA')">
+                    <i data-lucide="cpu" class="w-5 h-5"></i>
+                    <span>Módulos de IA / Agentes</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Usuario de la sesión -->
+        <div class="border-t border-gray-700 pt-4 mt-6 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                    AD
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-white leading-none">Admin Digimaster</p>
+                    <span class="text-xs text-gray-400">admin@digimaster.pro</span>
+                </div>
+            </div>
+            <button class="text-gray-400 hover:text-red-400 transition" title="Cerrar Sesión" onclick="alert('Cerrando sesión simulada')">
+                <i data-lucide="log-out" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="flex-1 p-6 md:p-8 overflow-y-auto">
+        <!-- Encabezado superior -->
+        <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-6 border-b border-gray-800 gap-4 mb-6">
+            <div>
+                <h2 class="text-2xl font-bold text-white">Vista General del Sistema</h2>
+                <p class="text-sm text-gray-400">Monitoreo en tiempo real de operaciones, ventas y usuarios en Digimaster Pro.</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button class="bg-gray-800 text-gray-200 border border-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-700 transition flex items-center space-x-2" onclick="location.reload()">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                    <span>Actualizar</span>
+                </button>
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition flex items-center space-x-2" onclick="openModal()">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                    <span>Nuevo Registro</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- TARJETAS DE MÉTRICAS (MOCK DATA BASE44) -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Tarjeta 1 -->
+            <div class="bg-gray-800 border border-gray-700 p-5 rounded-xl shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Ingresos Mensuales</span>
+                    <h3 class="text-2xl font-bold text-white mt-1" id="metric-revenue">$14,245.00</h3>
+                    <p class="text-xs text-green-400 font-medium mt-1 flex items-center">
+                        <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> +12.4% vs mes anterior
+                    </p>
+                </div>
+                <div class="p-3 bg-green-500/10 text-green-400 rounded-lg">
+                    <i data-lucide="dollar-sign" class="w-6 h-6"></i>
+                </div>
+            </div>
+            <!-- Tarjeta 2 -->
+            <div class="bg-gray-800 border border-gray-700 p-5 rounded-xl shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Usuarios Activos</span>
+                    <h3 class="text-2xl font-bold text-white mt-1" id="metric-users">1,842</h3>
+                    <p class="text-xs text-green-400 font-medium mt-1 flex items-center">
+                        <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> +8.1% esta semana
+                    </p>
+                </div>
+                <div class="p-3 bg-blue-500/10 text-blue-400 rounded-lg">
+                    <i data-lucide="users" class="w-6 h-6"></i>
+                </div>
+            </div>
+            <!-- Tarjeta 3 -->
+            <div class="bg-gray-800 border border-gray-700 p-5 rounded-xl shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Consultas de IA</span>
+                    <h3 class="text-2xl font-bold text-white mt-1">45,102</h3>
+                    <p class="text-xs text-purple-400 font-medium mt-1 flex items-center">
+                        <i data-lucide="zap" class="w-3 h-3 mr-1"></i> Créditos Base44 estables
+                    </p>
+                </div>
+                <div class="p-3 bg-purple-500/10 text-purple-400 rounded-lg">
+                    <i data-lucide="cpu" class="w-6 h-6"></i>
+                </div>
+            </div>
+            <!-- Tarjeta 4 -->
+            <div class="bg-gray-800 border border-gray-700 p-5 rounded-xl shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Tasa de Conversión</span>
+                    <h3 class="text-2xl font-bold text-white mt-1">3.42%</h3>
+                    <p class="text-xs text-red-400 font-medium mt-1 flex items-center">
+                        <i data-lucide="trending-down" class="w-3 h-3 mr-1"></i> -0.5% hoy
+                    </p>
+                </div>
+                <div class="p-3 bg-red-500/10 text-red-400 rounded-lg">
+                    <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- GRÁFICOS Y ANÁLISIS -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="bg-gray-800 border border-gray-700 p-5 rounded-xl lg:col-span-2">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="text-base font-bold text-white">Rendimiento y Flujo de Caja</h4>
+                    <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Últimos 6 meses</span>
+                </div>
+                <div class="h-64">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+            <div class="bg-gray-800 border border-gray-700 p-5 rounded-xl">
+                <h4 class="text-base font-bold text-white mb-4">Distribución por Licencia</h4>
+                <div class="h-64 flex items-center justify-center">
+                    <canvas id="distributionChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- TABLA DE CONTROL / ÚLTIMAS ACCIONES -->
+        <section class="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-sm">
+            <div class="px-5 py-4 border-b border-gray-700 flex items-center justify-between">
+                <h4 class="text-base font-bold text-white">Registros Recientes (Base de datos simulada)</h4>
+                <span class="text-xs bg-blue-500/10 text-blue-400 px-2 py-1 rounded font-semibold">CRUD Interactivo</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-800/50 border-b border-gray-700 text-gray-400 text-xs font-semibold uppercase tracking-wider">
+                            <th class="px-6 py-3">Cliente</th>
+                            <th class="px-6 py-3">Plan / Licencia</th>
+                            <th class="px-6 py-3">Estado</th>
+                            <th class="px-6 py-3">Monto</th>
+                            <th class="px-6 py-3 text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body" class="divide-y divide-gray-700 text-sm">
+                        <!-- Filas dinámicas se agregan con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- VENTANA MODAL PARA AGREGAR NUEVO CLIENTE (OPERATIVO EN CLIENT-SIDE) -->
+    <div id="crud-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-gray-800 border border-gray-700 rounded-xl w-full max-w-md overflow-hidden shadow-xl animate-in fade-in zoom-in-95 duration-150">
+            <div class="px-5 py-4 border-b border-gray-700 flex items-center justify-between">
+                <h3 class="text-base font-bold text-white">Agregar Nuevo Registro a Digimaster Pro</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <form id="record-form" class="p-5 space-y-4" onsubmit="addRecord(event)">
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Nombre del Cliente</label>
+                    <input type="text" id="client-name" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 transition" placeholder="Ej. Carlos Pérez">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Plan contratado</label>
+                    <select id="client-plan" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 transition">
+                        <option value="Pro Anual">Pro Anual</option>
+                        <option value="Enterprise Lite">Enterprise Lite</option>
+                        <option value="SaaS Partner">SaaS Partner</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Estado de Pago</label>
+                    <select id="client-status" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 transition">
+                        <option value="Activo">Activo</option>
+                        <option value="Pendiente">Pendiente</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Monto ($ USD)</label>
+                    <input type="number" id="client-amount" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 transition" placeholder="Ej. 250">
+                </div>
+                <div class="flex items-center justify-end space-x-3 pt-2">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-700 text-gray-200 rounded-lg text-sm font-medium hover:bg-gray-600 transition">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition">Guardar Cliente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- LÓGICA JAVASCRIPT: COMPORTAMIENTO COMPLETO, GRÁFICOS Y CRUD SIMULADO -->
+    <script>
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
+
+        // Base de datos local en memoria simulada (Típico del front reactivo de Base44)
+        let records = [
+            { id: 1, name: 'Alejandro Gómez', plan: 'Enterprise Lite', status: 'Activo', amount: 1200 },
+            { id: 2, name: 'Beatriz Mendoza', plan: 'Pro Anual', status: 'Activo', amount: 450 },
+            { id: 3, name: 'Desarrollos Alfa S.A.', plan: 'SaaS Partner', status: 'Pendiente', amount: 3500 },
+            { id: 4, name: 'Mariana Silva', plan: 'Pro Anual', status: 'Activo', amount: 450 }
+        ];
+
+        // Renderizar tabla
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+            
+            records.forEach(rec => {
+                const statusClass = rec.status === 'Activo' 
+                    ? 'bg-green-500/10 text-green-400' 
+                    : 'bg-yellow-500/10 text-yellow-400';
+
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-700/30 transition';
+                row.innerHTML = `
+                    <td class="px-6 py-4 font-medium text-white">${rec.name}</td>
+                    <td class="px-6 py-4 text-gray-300">${rec.plan}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2.5 py-1 text-xs font-semibold rounded-full ${statusClass}">${rec.status}</span>
+                    </td>
+                    <td class="px-6 py-4 font-mono text-gray-300">$${rec.amount.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                    <td class="px-6 py-4 text-right">
+                        <button onclick="deleteRecord(${rec.id})" class="text-gray-500 hover:text-red-400 transition" title="Eliminar">
+                            <i data-lucide="trash-2" class="w-4 h-4 inline"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            // Re-renderizar iconos dinámicos
+            lucide.createIcons();
+            updateTotalMetrics();
+        }
+
+        // Actualizar métricas dinámicamente basadas en el CRUD
+        function updateTotalMetrics() {
+            const baseRevenue = 14245;
+            const extraRevenue = records.reduce((sum, r) => sum + (r.status === 'Activo' ? r.amount : 0), 0);
+            document.getElementById('metric-revenue').innerText = `$${(baseRevenue + extraRevenue).toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('metric-users').innerText = (1842 + records.length).toLocaleString();
+        }
+
+        // Ventana Modal
+        function openModal() {
+            document.getElementById('crud-modal').classList.remove('hidden');
+        }
+        function closeModal() {
+            document.getElementById('crud-modal').classList.add('hidden');
+            document.getElementById('record-form').reset();
+        }
+
+        // CRUD: Añadir Registro
+        function addRecord(e) {
+            e.preventDefault();
+            const name = document.getElementById('client-name').value;
+            const plan = document.getElementById('client-plan').value;
+            const status = document.getElementById('client-status').value;
+            const amount = parseFloat(document.getElementById('client-amount').value) || 0;
+
+            const newRecord = {
+                id: Date.now(),
+                name,
+                plan,
+                status,
+                amount
+            };
+
+            records.unshift(newRecord);
+            renderTable();
+            closeModal();
+        }
+
+        // CRUD: Eliminar Registro
+        function deleteRecord(id) {
+            if(confirm('¿Estás seguro de que deseas eliminar este registro de la base de datos de Digimaster Pro?')) {
+                records = records.filter(r => r.id !== id);
+                renderTable();
+            }
+        }
+
+        // Inicialización de Gráficos con Chart.js
+        const ctxPerformance = document.getElementById('performanceChart').getContext('2d');
+        new Chart(ctxPerformance, {
+            type: 'line',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Ventas ($)',
+                    data: [12000, 19000, 15000, 25000, 22000, 31000],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } },
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } }
+                }
+            }
+        });
+
+        const ctxDistribution = document.getElementById('distributionChart').getContext('2d');
+        new Chart(ctxDistribution, {
+            type: 'doughnut',
+            data: {
+                labels: ['Pro Anual', 'Enterprise Lite', 'SaaS Partner'],
+                datasets: [{
+                    data: [55, 30, 15],
+                    backgroundColor: ['#3b82f6', '#a855f7', '#10b981'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#9ca3af', boxWidth: 12, padding: 15 }
+                    }
+                }
+            }
+        });
+
+        // Ejecutar render inicial al cargar
+        renderTable();
+    </script>
+</body>
+</html>
